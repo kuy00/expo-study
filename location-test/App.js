@@ -8,10 +8,13 @@ const CLIENT = {};
 
 // Start Receiving Location
 const startReceivingLocation = async () => {
-  // Check Permission
+  // Check Foreground Permission
   const { status: foregroundStatus } = await Location.requestForegroundPermissionsAsync();
+
   if (foregroundStatus === 'granted') {
+    // Check Background Permission
     const { status: backgroundStatus } = await Location.requestBackgroundPermissionsAsync();
+
     if (backgroundStatus === 'granted') {
       //Receiving Location Updates
       console.log('Start Receiving Location');
@@ -26,7 +29,7 @@ const startReceivingLocation = async () => {
       CLIENT.location = await Location.watchPositionAsync({
         accuracy: Location.Accuracy.Balanced, // Accurate to within one hundred meters.
         timeInterval: 300, // 300 milliseconds
-        distanceInterval: 100, // 100 meters
+        distanceInterval: 10, // 10 meters
       }, (loc) => {
         console.log('Change Location');
         console.log(loc);
